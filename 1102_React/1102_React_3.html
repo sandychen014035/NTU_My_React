@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello World</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+    <!-- Don't use this in production: -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script  type="text/babel">
+    
+        // React 包裝動態產生標籤的程序,方便我們快速產生標籤
+        // 使用 React .createElement("標籤名稱","標籤設定","子標籤");
+        // 建立 React Element(包裝過的HTML Element)
+
+        // React中要用className
+        let title=<h3 className="title">這是網頁標題</h3>; //JSX語法
+ 
+        let data=["google","Instagram","apple"];
+        let items=[];
+        for(let i=0;i<data.length;i++){
+            items.push(<li>{data[i]}</li>);
+        }
+
+        let list = <ul>{items}</ul>
+
+        // F12 錯誤導正
+        // Warning可以執行,但最好修正
+        // const container = document.querySelector("#root");
+
+
+        const container = document.querySelector("#root");
+        const root = ReactDOM.createRoot(container);
+        // root.render(<MyApp />);
+        root.render([title, list]);
+    </script>
+    <!--
+      Note: this page is a great way to try React but it's not suitable for production.
+      It slowly compiles JSX with Babel in the browser and uses a large development build of React.
+
+      Read this page for starting a new React project with JSX:
+      https://react.dev/learn/start-a-new-react-project
+
+      Read this page for adding React with JSX to an existing project:
+      https://react.dev/learn/add-react-to-an-existing-project
+    -->
+</body>
+
+</html>

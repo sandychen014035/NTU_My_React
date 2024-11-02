@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML DOM</title>
+</head>
+
+<body>
+
+    <script>
+        //   加入
+        //  <h3 class="title">這是網頁標題</h3>
+        //  <ul>
+        //      <li>google</li>
+        //      <li>Instagram</li>
+        //  </ul>
+
+        // #1 
+        // 1-1產生空白的標籤物件=>document.createElement("標籤名稱"); 
+        let title = document.createElement("h3");
+        // .textContent => 單純的文字
+        title.textContent="這是網頁標題";
+        // 設定class的屬性
+        title.className="title";
+        
+        let list=document.createElement("ul");
+
+        let item1=document.createElement("li");
+        // item1.textContent="google";
+
+        let item2=document.createElement("li");
+        item2.textContent="Instagram";
+
+        // 將google設定成超連結
+        let a=document.createElement("a");
+        item1.appendChild(a);
+        a.textContent="google";
+        a.href="https://www.google.com/";
+
+        list.appendChild(item1);
+        list.appendChild(item2);
+
+        // 1-2使用 某個標籤.appendChild(要放進去的子標籤); 才會出現在畫面上
+        document.body.appendChild(title);
+        document.body.appendChild(list);
+
+
+        console.log(title);
+    </script>
+</body>
+
+</html>
