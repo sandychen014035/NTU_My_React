@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello World</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+    <!-- Don't use this in production: -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+
+        // 主件的屬性(property)
+        // 自定義的組件
+        // 點選自身改變文字
+        function Head(props) {
+            // 使用React.useState(初始的狀態資料);建立組件的狀態
+            let [title,setTitle]=React.useState("這是網站標題");
+            let update=()=>{
+                setTitle("新的網站標題")
+            }
+            return <h3 onClick={update}>
+                {title}
+            </h3>
+        }
+        function Button(props){
+            return <button>{props.text}</button>
+        }
+
+        // 使用React,程式中不會直接操作HTML DOM
+        // 點選並更換標題
+        // 組件的狀態(State):在操作過程中,可能需要更新的部分
+        function App() {
+            return <>
+                <Head />
+                <Button text="替換" />
+            </>
+        }
+
+        const container = document.querySelector("#root");
+        const root = ReactDOM.createRoot(container);
+        // root.render(<MyApp />);
+        root.render(<App />);
+    </script>

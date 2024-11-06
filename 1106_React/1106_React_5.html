@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello World</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+    <!-- Don't use this in production: -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+
+        // 主件的屬性(property)
+        // 自定義的組件
+
+        // 使用React,程式中不會直接操作HTML DOM
+        // 點選並更換標題
+        // 組件的狀態(State):在操作過程中,可能需要更新的部分
+        function Head(props) {
+            return <h3>{props.title}</h3>
+        }
+        function Button(props){
+            return <button onClick={props.handler}>{props.text}</button>
+        }
+        function Design(props){
+            // 設定透明度 [原本,更改]
+            let [opacity, setOpacity] = React.useState(1); // 
+            let Opactity=function(){
+                setOpacity(0.5);
+            }
+            let OpactityB=function(){
+                setOpacity(1);
+            }
+
+            return <div onPointerOver={Opactity} onPointerOut={OpactityB} style={{ opacity }} >{props.children}</div>
+        }
+
+        function App() {
+            // 使用React.useState(初始的狀態資料);建立組件的狀態
+            let [title,setTitle]=React.useState("這是網站標題");
+            let update=function(){
+                setTitle("新的網站標題")
+            }
+            return <>
+                <Head title={title}/>
+                <Button handler={update} text="替換" />
+                <Design >
+                    <div>以下內容半透明</div>
+                    <div>以下內容半透明</div>
+                </Design>
+            </>
+        }
+        const container = document.querySelector("#root");
+        const root = ReactDOM.createRoot(container);
+        // root.render(<MyApp />);
+        root.render(<App />);
+    </script>

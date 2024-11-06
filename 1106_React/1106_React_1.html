@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello World</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+    <!-- Don't use this in production: -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+
+        // React 包裝動態產生標籤的程序,方便我們快速產生標籤
+        // 使用 React .createElement("標籤名稱","標籤設定","子標籤");
+        // 建立 React Element(包裝過的HTML Element)
+
+        // React中要用className
+        // React 組件:回傳React Element的函式 *函式名稱字首一定要大寫
+
+
+        // 自定義的組件
+        function List() {
+            return <ul>
+                <li><a href="https://www.google.com/">google</a></li>
+                <li><a href="https://www.Instagram.com/">Instagram</a></li>
+            </ul>;
+
+        }
+
+        // 原生組件
+        // 習慣命名APP()
+        // 主件的屬性(property)
+        function App() {
+            let title="這是網頁標題2"
+            return <>
+                {/*#1 加入css  {{ css }}*/}
+                <h3 className="title" style={{ color: "red", fontSize: "20px" }}>
+                    這是網頁標題<br/>
+                    {title}
+                </h3>
+                <List />
+            </>
+        }
+
+        const container = document.querySelector("#root");
+        const root = ReactDOM.createRoot(container);
+        // root.render(<MyApp />);
+        root.render(<App />);
+    </script>
