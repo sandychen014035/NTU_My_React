@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // 函式
+        // let add=(n1,n2)=>(n1+n2)
+        // let result=add(4,5);
+        // console.log(result);
+
+        // 物件
+        // 一個函式,回傳乘法與加法結果
+        function cal(args){
+            return {
+                x:args.n1*args.n2,
+                y:args.n1+args.n2
+            };
+        }
+        let {x,y}=cal({
+            n1:3,
+            n2:7
+        });
+        
+        console.log(x);
+        console.log(y);
+
+
+
+    </script>
+</body>
+</html>

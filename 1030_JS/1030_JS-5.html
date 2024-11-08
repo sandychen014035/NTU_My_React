@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+
+        // 一個延遲的加法含式
+        // 使用函式包裝排程(非同步)的程式,要把運算結果丟到函式外部,讓其他程式可以接著處理
+        // #2 Callback 回乎函式、Promise、async/await
+        function delayeAdd(n1, n2, time, cb) {
+            window.setTimeout(function () {
+                cb(n1 + n2)
+            }, time);
+        }
+
+        // Promise的基本使用方式
+        // new Promise(執行函式)
+        /*
+        new Promise(function(執行成功時要呼叫的函式,執行失敗時要呼叫的函式){
+          立刻執行程式碼})
+        */
+        let p = new Promise(function (resolve, reject) {
+            let number = prompt("輸入一個正整數", "");
+            if (number > 0) {
+                resolve(number);
+            } else {
+                reject("請輸入正整數")
+            }
+        });
+
+        p.then(function(result){
+            console.log(result);
+        }).catch(function(error){
+            console.log("錯誤",error);
+        });
+        console.log("After")
+    </script>
+</body>
+
+</html>

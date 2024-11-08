@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+
+        // 一個延遲的加法含式
+        // 使用函式包裝排程(非同步)的程式,要把運算結果丟到函式外部,讓其他程式可以接著處理
+        // #2 Callback 回乎函式、Promise、async/await
+        function delayeAdd(n1, n2, time) {
+            let p =new Promise(function(resolve){
+                window.setTimeout(function () {
+                    resolve(n1 + n2);
+            }, time);
+        });
+        return p;}
+
+        delayeAdd(3,4,2000).then(function(result){
+            console.log(result);
+            return delayeAdd(5,8,3000);
+        }).then(function(result){
+            console.log("Ans",result);
+            return delayeAdd(1,1,1000);
+        }).then(function(result){
+            console.log("答案式",result);
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+
+        // 一個延遲的加法含式
+        // 使用函式包裝排程(非同步)的程式,要把運算結果丟到函式外部,讓其他程式可以接著處理
+        // #3 async/await
+
+        /* 
+            async function 函式名稱(){
+                let 變數名稱=await Promise物件;  // 變數會取得Promise物件resolved value
+            }
+        */
+async function execute() {
+    let data=await new Promise(function(resolve){
+            resolve(5);
+        });
+        console.log(data);
+}
+
+        
+    </script>
+</body>
+
+</html>

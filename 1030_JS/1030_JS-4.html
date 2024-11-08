@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+
+        // 非同步的程式 Asynchronous
+        // 內建工作 setTimeout{執行內容,秒數}
+        window.setTimeout(function () {
+            console.log("2/s")
+        }, 3000);
+        console.log("After Scheduling");
+        // 會先顯示After Scheduling,在顯示setTimeout()
+
+        // 一個延遲的加法含式
+        // 使用函式包裝排程(非同步)的程式,要把運算結果丟到函式外部,讓其他程式可以接著處理
+        // #1定義第四個參數cb函式
+        function delayeAdd(n1, n2, time, cb) {
+            window.setTimeout(function () {
+                // return n1+n2; // 出不來
+                // console.log(cb)
+                cb(n1 + n2)
+            }, time);
+            //  return n1+n2; 直接寫外面不要延遲3秒鐘
+
+        }
+        // 下面兩個函式會同時印出
+        // delayeAdd(1,3,3000,function(result){
+        //     console.log(result*10);
+        // });
+        // delayeAdd(5,6,3000,function(result){
+        //     console.log("Ans",result);
+        // });
+
+        // 非同步程式
+        // 第一層
+        delayeAdd(5, 6, 3000, function (resultTime) {
+            console.log(resultTime);
+            // 第二層
+            delayeAdd(3, 4, resultTime * 1000, function (result) {
+                console.log("Ans", result);
+                // 第三層
+                delayeAdd(1, 2, 2000, function (result) {
+                    console.log("答案", result);
+                });
+            });
+        });
+
+    </script>
+</body>
+
+</html>
