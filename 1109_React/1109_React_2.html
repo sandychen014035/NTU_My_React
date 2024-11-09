@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1109_React</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+
+        function App() {
+            // 處理輸入的元件
+            // value=[ {text} ,  ]
+            let [text, setText] = React.useState("")
+            let changeText = function (e) {
+                // setText更改狀態
+                setText(e.target.value)
+            };
+            // 處理勾勾區
+            let [important, setimportant] = React.useState(false);
+            let changeImportant = function () {
+                setimportant(!important);
+            }
+
+
+            // 處理主要的列表資料
+            // [{text:字串},{Important:布林值}....]
+
+            let remove=function(index){
+                let newData=[...data];
+                newData.splice(index,1);
+                setData(newData);
+            }
+
+            let [data, setData] = React.useState([]);
+            let items = [];
+            for (let i = 0; i < data.length; i++) {
+                if (data[i].important) {
+                    items.push(<li
+                        style={{ fontWeight: "bold" }} key={i}>
+                        <span>{data[i].text}</span>
+                        <button onClick={()=>{remove(i);}}>X</button>
+                    </li>);
+                } else {
+                    items.push(<li key={i}>
+                        <span>{data[i].text}</span>
+                        <button onClick={()=>{remove(i);}}>X</button>
+                    </li>);
+                }
+            };
+
+            // 處理點擊動作
+            let add = function () {
+                // 原生JS *使用React,程式中不會直接操作HTML DOM*
+                // React=> 
+                // let textBox=document.querySelector("#textBox");
+                // console.log(textBox.value)  
+                console.log(text)
+                // 複製陣列slice(0)
+                let newData = data.slice(0);
+                newData.push({ text: text, important: important });
+                setData(newData);
+                // 把輸入框文字清空
+                setText("");
+            };
+            return <>
+                {/* 確認有沒有打勾 => checked */}
+                <input type="checkbox" checked={important} onChange={changeImportant} />
+
+                {/* 用value作狀態對應(let...) =>controlled element*/}
+                {/* onChange => 當內容有變化時 */}
+                <input type="text" name="" value={text} onChange={changeText}/*id="textBox"*/ />
+                {/* 錯誤#1 沒有要立即使用不加() ()有呼叫動作 */}
+                <button id="btn" onClick={add}>新增</button>
+                <hr />
+                <ul>{items}</ul>
+            </>
+        }
+
+        const container = document.querySelector("#root");
+        const root = ReactDOM.createRoot(container);
+        root.render(<App />);
+    </script>
+</body>
+
+</html>

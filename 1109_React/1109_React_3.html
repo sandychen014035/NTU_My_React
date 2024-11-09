@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1109_React</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+
+        function App() {
+            let add = function (text, important) {
+                let newData = [...data];
+                newData.push({ text: text, important: important });
+                setData(newData);
+
+            };
+            let remove = function (index) {
+                let newData = [...data];
+                newData.splice(index, 1);
+                setData(newData);
+            }
+
+            let [data, setData] = React.useState([]);
+
+            return <>
+                <ToDoForm add={add} />
+                <hr />
+                <ToDoList data={data} remove={remove} />
+            </>
+        }
+
+        function ToDoList(props) {
+            let data = props.data
+            let items = [];
+            for (let i = 0; i < data.length; i++) {
+                if (data[i].important) {
+                    items.push(<li
+                        style={{ fontWeight: "bold" }} key={i}>
+                        <span>{data[i].text}</span>
+                        <button onClick={() => props.remove(i)}>X</button>
+                    </li>);
+                } else {
+                    items.push(<li key={i}>
+                        <span>{data[i].text}</span>
+                        <button onClick={() => props.remove(i)}>X</button>
+                    </li>);
+                }
+            };
+            return <ul>{items}</ul>
+        }
+        function ToDoForm(props) {
+            let [text, setText] = React.useState("")
+            let changeText = function (e) {
+                setText(e.target.value)
+            };
+            let [important, setimportant] = React.useState(false);
+            let changeImportant = function () {
+                setimportant(!important);
+            }
+            return <>
+                <input type="checkbox" checked={important} onChange={changeImportant} />
+                <input type="text" name="" value={text} onChange={changeText}/*id="textBox"*/ />
+                <button id="btn" onClick={() => {
+                    props.add(text, important);
+                    setText("");
+                }}>新增</button>
+            </>
+        }
+
+        const container = document.querySelector("#root");
+        const root = ReactDOM.createRoot(container);
+        root.render(<App />);
+    </script>
+</body>
+
+</html>
