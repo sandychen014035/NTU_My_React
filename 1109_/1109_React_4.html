@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1109_React</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+
+
+        function App() {
+            // 新增的函式
+            let add = function () {
+                let newData = data.slice(0);
+                newData.push({ text: text, important: important });
+                setData(newData);
+                setText("");
+                setImportant("");
+            }
+
+            // 刪除的函式
+            
+            let remove = function (i) {
+                let newData = data.slice(0);
+                newData.splice(i,1);
+                setData(newData);
+            }
+
+            // 處理輸入元件 => 文字框的狀態
+            const [text, setText] = React.useState("");
+            let changeText = function (e) {
+                setText(e.target.value);
+            }
+
+            // 處理資料列表 => 畫面的狀態
+            const [data, setData] = React.useState([]);
+            let items = [];
+            for (let i = 0; i < data.length; i++) {
+                if (data[i].important) {
+                    items.push(<li style={{ color: "red" }} key={i}>
+                        <span>{data[i].text}</span>
+                        {/* #1 先在畫面上加上刪除按鈕 */}
+                        {/* #2 按鈕的事件=>onClick */}
+                        {/* 如果是onClick={remove(i)} => 會立即執行 */}
+                        <button onClick={() => { remove(i) }}>刪除</button>
+                    </li>);
+                } else {
+                    items.push(<li key={i}>
+                        <span>{data[i].text}</span>
+                        <button onClick={() => { remove(i) }}>刪除</button>
+                    </li>);
+                }
+            }
+
+            // 勾選的狀態
+            const [important, setImportant] = React.useState(false);
+            let checkImportant = function () {
+                setImportant(!important);
+            };
+
+
+            return <>
+                {/* 勾選的狀態=>checked */}
+                {/* 勾選狀態改變=>onChange */}
+                <input type="checkbox" checked={important} onChange={checkImportant} />
+                <input type="text" value={text} onChange={changeText} />
+                <button onClick={add}>新增</button>
+                <hr />
+                <ul>{items}
+                </ul>
+            </>
+        }
+
+        const container = document.querySelector("#root");
+        const root = ReactDOM.createRoot(container);
+        root.render(<App />);
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1109_React</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+
+
+        function App() {
+            const [text, setText] = React.useState("");
+            let changeText = function (e) {
+                setText(e.target.value);
+            }
+            let add = function () {
+                // console.log(text);
+                // 因為是同一個陣列,React認為沒有改變
+                // data.push(text); setData(data);
+                // #4 宣告一個新陣列,來改變畫面 slice(0)=>複製原來的陣列
+                let newData=data.slice(0);
+                newData.push(text);
+                setData(newData);
+                //  #5 新增後清空文字框
+                setText("");
+
+            }
+            // 抓取輸入框文字到畫面上
+            // #1 建立畫面的狀態 [原始畫面,更改畫面]
+            //    *有很多筆,所以是陣列 
+            //    *先給假設值
+            let [data,setData]=React.useState(["豬豬","海豹"]);
+            // #2 宣告一個空陣列來放data抓取的值
+            let items=[];
+            // #3 抓取data的每一個值 並加上<li></li>
+            for(let i=0;i<data.length;i++){
+                items.push(<li key={i}>{data[i]}</li>);
+            }
+            return <>
+                <input type="text" value={text} onChange={changeText} />
+                <button onClick={add}>新增</button>
+                <hr />
+                <ul>{items}
+                </ul>
+            </>
+        }
+
+        const container = document.querySelector("#root");
+        const root = ReactDOM.createRoot(container);
+        root.render(<App />);
+    </script>
+</body>
+
+</html>
