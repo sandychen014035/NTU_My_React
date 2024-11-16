@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>影片撥放器</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+
+<body>
+    <!-- 影片播放 -->
+    <!-- controls=>預設影片控制器 -->
+    <!-- <video controls src="video.mp4"></video> -->
+    <video id="video" src="video.mp4"></video>
+    <hr>
+    <button onclick="play();">play</button>
+    <button onclick="pause();">pause</button>
+    <button onclick="replay();">Replay</button>
+    <script>
+        let video = document.querySelector("#video");
+        function play(){
+            video.play();
+        }
+        function pause(){
+            video.pause();
+        }
+        function replay(){
+            video.currentTime=0;
+            video.play();
+        }
+
+    </script>
+    <div id="root"></div>
+    <script type="text/babel">
+
+        function App() {
+
+            return <>
+
+            </>
+        }
+        const container = document.querySelector("#root");
+        const root = ReactDOM.createRoot(container);
+        root.render(<App />);
+    </script>
+</body>
+
+</html>

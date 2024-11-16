@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1109_React</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+
+
+        function App() {
+            // 新增的函式
+            {/* #2 配合元件中的箭頭函式放入參數 */}
+            let add = function (text,important) {
+                let newData = data.slice(0);
+                newData.push({ text: text, important: important });
+                setData(newData);
+                // #3 setText改放在有setText的程式地方
+                // setText("");
+                // setImportant("");
+            }
+
+            // 刪除的函式
+            let remove = function (i) {
+                let newData = data.slice(0);
+                newData.splice(i, 1);
+                setData(newData);
+            }
+
+            // 處理資料列表 => 畫面的狀態
+            let [data, setData] = React.useState(null);
+            React.useEffect(function(){
+                /*
+                // 使用localStorage在瀏覽器中儲存一些資料,只能是"字串"的型態
+                let list=["item1","item2","item3"];
+                // 把陣列/物件結構的資料,轉換成JSON格式的字串
+                window.localStorage.setItem("data",JSON.stringify(list));
+                // 把JSON格式的字串,重新轉換回陣列/物件的結構
+                list=JSON.parse(window.localStorage.getItem("data"));
+                console.log(list);
+                */
+
+                if(data==null){ // 第一次掛載
+                    data=window.localStorage.getItem("list");
+                    if(data==null){  // 如果沒有初始資料,將狀態設定為空陣列
+                        data=[];
+                    }else{ // 如果有轉換格式
+                        data=JSON.parse(data);
+                    }
+                    setData(data);
+                }
+                window.localStorage.setItem("list",JSON.stringify(data))
+
+            },[data]);
+            if(data==null){
+                return <div>Loading</div>
+            }else{
+                return <>
+                {/* #2 <One />元件需要add 所以傳add下去 */}
+                <One add={add} />
+                <hr />
+                {/* #1 <Two />元件需要items 所以傳data下去 */}
+                {/* #4 <Two />元件需要remove 所以傳remove下去 */}
+                <Two data={data} remove={remove}/>
+            </>
+            }
+
+            
+        }
+        // 切割
+        function One(props) {
+            {/* #2 <One />元件需要{important} {text} 所以把程式放入元件裡 */ }
+            // 處理輸入元件 => 文字框的狀態
+            const [text, setText] = React.useState("");
+            let changeText = function (e) {
+                setText(e.target.value);
+            }
+            // 勾選的狀態
+            const [important, setImportant] = React.useState(false);
+            let checkImportant = function () {
+                setImportant(!important);
+            };
+            return <>
+                <input type="checkbox" checked={important} onChange={checkImportant} />
+                <input type="text" value={text} onChange={changeText} />
+                {/* #2 <button onClick={props.add}>新增</button> */}
+                {/* #2 上面兩行的{text}跟{important}是只"變數" */}
+                {/* #2 但add函式裡的text跟important是"狀態" */}
+                {/* #2 用箭頭函式來包裹 並將 text 和 important 作為參數傳遞 */}
+                <button onClick={()=>{
+                    props.add(text,important);
+                    {/* #3 setText setImportant程式在One元件裡 點擊後刪除,故放在onClick所執行的動作 */}
+                    setText("");
+                    setImportant("")}}>新增</button>
+            </>
+        }
+
+        function Two(props) {
+            {/* #1 <Two />元件需要{items} 所以把items程式放入元件裡 */ }
+            {/* #1 items需要data的陣列資料,所以接收App的data 加上props */ }
+            let data = props.data;
+            let items = [];
+            for (let i = 0; i < data.length; i++) {
+                if (data[i].important) {
+                    items.push(<li style={{ color: "red" }} key={i}>
+                        <span>{data[i].text}</span>
+                        <button onClick={() =>  props.remove(i) }>刪除</button>
+                    </li>);
+                } else {
+                    items.push(<li key={i}>
+                        <span>{data[i].text}</span>
+                        {/* #4 接收傳下來的remove */}
+                        <button onClick={() =>  props.remove(i) }>刪除</button>
+                    </li>);
+                }
+            }
+            return <>
+                <ul>{items}</ul>
+            </>
+        }
+
+        const container = document.querySelector("#root");
+        const root = ReactDOM.createRoot(container);
+        root.render(<App />);
+    </script>
+</body>
+
+</html>
