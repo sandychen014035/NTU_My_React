@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>標籤選單</title>
+    <style>
+        span {
+            margin: 20px;
+        }
+    </style>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+    <!-- Don't use this in production: -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+</head>
+
+<body>
+    <div>
+        <span>原生JS</span>
+        <span onclick="change('about')">about</span>
+        <span onclick="change('news')">news</span>
+        <span onclick="change('work')">work</span>
+        <span onclick="change('content')">content</span>
+    </div>
+    <hr>
+    <div id="text"></div>
+    <br><br><br><br>
+    <script>
+        function change(menu) {
+            let text = document.querySelector("#text");
+            // 避免重複出現,所以清空text裡的HTML
+            text.innerHTML = "";
+            // createElement("HTML標籤") =>新增HTML標籤
+            let textBox = document.createElement("div");
+            if (menu == "about") {
+                // textContent=>純文字
+                textBox.textContent = "about";
+            } else if (menu == "news") {
+                textBox.textContent = "news";
+            } else if (menu == "work") {
+                textBox.textContent = "work";
+            } else if (menu == "content") {
+                textBox.textContent = "content";
+            }
+            // 父元素.appendChild(新增子元素);
+            text.appendChild(textBox);
+        };
+    </script>
+
+
+    <div id="root"></div>
+    <script type="text/babel">
+
+        function App() {
+            // 在React中作互動,要抓到改變的狀態
+            // 根據狀態來決定畫面的呈現
+            // 頁面的狀態
+            // setPagee改變狀態的函式
+            const [page, setPage] = React.useState("about");
+            // 轉變的畫面變數
+            let pageChange = <About />
+            if (page == "news") {
+                pageChange = <News />;
+            } else if (page == "work") {
+                pageChange = <Work />;
+            } else if (page == "content") {
+                pageChange = <Content />;
+            } else { pageChange = <About />; }
+
+            return <>
+                <div>
+                    <span>Rrect</span>
+                    {/* 點擊事件 => onClick */}
+                    {/* 每次點擊觸發setPage來更新page */}
+                    <span onClick={() => { setPage("about"); }}>about</span>
+                    <span onClick={() => { setPage("news"); }}>news</span>
+                    <span onClick={() => { setPage("work"); }}>work</span>
+                    <span onClick={() => { setPage("content"); }}>content</span>
+                </div>
+                <hr />
+                <main>{pageChange}</main>
+            </>
+        }
+        function News() {
+
+            const [num, setNum] = React.useState(1);
+
+            let add = function () {
+                setNum(function (preNum) {
+                    console.log(preNum)
+                    return preNum + 1
+                })
+            }
+            // 第一次掛載組件的時候執行一個函式,組件更新時不重複執行
+            // React.useEffect(function){
+            // 　　　　要執行的程式碼,
+            // 　　　　return function(){
+            // 　　　　　　　　　組件卸載的時候要做的事情
+            // 　　　　　　　};},[true]}
+
+            // 每秒鐘+1  setInterval(要執行的函式,指定執行間隔的時間)
+            React.useEffect(function () {
+                window.scheduleID = setInterval(function () {
+                    console.log("Hello");
+                    add();
+                }, 1000);
+                return function () {
+                    // 清除掛載的時候設定的排程
+                    // clearInterval=>清除
+                    window.clearInterval(scheduleID);
+                };
+            }, [true]);
+            return <>
+                {/* +-購物車 */}
+                <span>{num}</span>
+                {/* <button onClick={add}>+</button> */}
+            </>
+        };
+        function About() {
+            // #2 宣告狀態 初期寫不出資料=>空陣列
+            let [data, setData] = React.useState([]);
+            // #2 根據狀態產生畫面
+            let item = [];
+            for (let i = 0; i < data.length; i++) {
+                item.push(<li key={data[i].number}>{data[i].name}</li>)
+            };
+
+
+
+            //  #3 只需要在組件掛載時抓一次 React useEffect
+            React.useEffect(function () {
+                let getData = async function () {
+                    let src = "https://cwpeng.github.io/live-records-samples/data/products.json";
+                    // #1 await一定要用async包起來 但async不可包覆組件
+                    // #1 所以宣告函式包起來
+                    let response = await fetch(src);
+                    // #2根據(呼叫)getData抓到的資料 => data (為新資料 改名以免搞混)
+                    // let data = await response.json();
+                    let newdata = await response.json();
+                    setData(newdata);
+
+                    // let item = [];
+                    // for (let i = 0; i < date.length; i++) {
+                    //     item.push(<li key={data[i].number}>{data[i].name}</li>)
+                    // };
+                };
+                getData();
+            }, [true]);
+
+            //  #1 呼叫
+            //  #1 getData => 去網路抓資料,抓取時間不可預測
+            // getData();
+            return <>
+                <h3>Project List</h3>
+                <ul>{item}</ul></>
+        };
+        function Work() {
+            return <>Work</>
+        };
+        function Content() {
+            return <>Content</>
+        };
+
+        const container = document.querySelector("#root");
+        const root = ReactDOM.createRoot(container);
+        // root.render(<MyApp />);
+        root.render(<App />);
+    </script>
+</body>
+
+</html>

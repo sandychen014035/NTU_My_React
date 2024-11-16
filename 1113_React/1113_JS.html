@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        ul {
+            display: flex;
+        }
+
+        li {
+            margin: 0 40px 0 0;
+        }
+    </style>
+</head>
+<body>
+     <!-- 點選選單改變下方文字內容 -->
+     <ul>
+        <li onclick="change('about');">about</li>
+        <li onclick="change('news');">news</li>
+        <li onclick="change('work');">work</li>
+        <li onclick="change('content');">content</li>
+    </ul>
+    <hr />
+    <div>
+    </div>
+    <script>
+        function change(menu) {
+            // getElementsByTagName 抓取HTML標籤
+            // 犯錯 #1 getElementsByTagName("div")會抓取到類陣列的物件
+            //         要抓取第一個要加上[0]  
+            let text = document.getElementsByTagName("div")[0];
+            switch(menu){
+                case "about" :
+                text.textContent="about about";
+                break
+                case "news" :
+                text.textContent="news news";
+                break
+                case "work" :
+                text.textContent="work work";
+                break
+                case "content" :
+                text.textContent="content content";
+                break
+            }
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>標籤選單</title>
+    <style>
+        span {
+            margin: 20px;
+        }
+    </style>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+    <!-- Don't use this in production: -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+</head>
+
+<body>
+    <div>
+        <span>原生JS</span>
+        <span onclick="change('about')">about</span>
+        <span onclick="change('news')">news</span>
+        <span onclick="change('work')">work</span>
+        <span onclick="change('content')">content</span>
+    </div>
+    <hr>
+    <div id="text"></div>
+    <br><br><br><br>
+    <script>
+        function change(menu) {
+            let text = document.querySelector("#text");
+            // 避免重複出現,所以清空text裡的HTML
+            text.innerHTML = "";
+            // createElement("HTML標籤") =>新增HTML標籤
+            let textBox = document.createElement("div");
+            if (menu == "about") {
+                // textContent=>純文字
+                textBox.textContent = "about";
+            } else if (menu == "news") {
+                textBox.textContent = "news";
+            } else if (menu == "work") {
+                textBox.textContent = "work";
+            } else if (menu == "content") {
+                textBox.textContent = "content";
+            }
+            // 父元素.appendChild(新增子元素);
+            text.appendChild(textBox);
+        };
+    </script>
+
+
+    <div id="root"></div>
+    <script type="text/babel">
+
+        function App() {
+            // 在React中作互動,要抓到改變的狀態
+            // 根據狀態來決定畫面的呈現
+            // 頁面的狀態
+            // setPagee改變狀態的函式
+            const[page,setPage]=React.useState("about");
+            // 轉變的畫面變數
+            let pageChange=<About/>
+            if(page=="news"){
+                pageChange=<News/>;
+            }else if(page=="work"){
+                pageChange=<Work/>;
+            }else if(page=="content"){
+                pageChange=<Content/>;
+            }else {pageChange=<About/>;}
+
+            return <>
+                <div>
+                    <span>Rrect</span>
+                    {/* 點擊事件 => onClick */}
+                    {/* 每次點擊觸發setPage來更新page */}
+                    <span onClick={()=>{setPage("about");}}>about</span>
+                    <span onClick={()=>{setPage("news");}}>news</span>
+                    <span onClick={()=>{setPage("work");}}>work</span>
+                    <span onClick={()=>{setPage("content");}}>content</span>
+                </div>
+                <hr />
+                <main>{pageChange}</main>
+            </>
+        }
+        function About(){
+            return <>About</>
+        };
+        function News(){
+            return <>News</>
+        };
+        function Work(){
+            return <>Work</>
+        };
+        function Content(){
+            return <>Content</>
+        };
+
+        const container = document.querySelector("#root");
+        const root = ReactDOM.createRoot(container);
+        // root.render(<MyApp />);
+        root.render(<App />);
+    </script>
+</body>
+
+</html>

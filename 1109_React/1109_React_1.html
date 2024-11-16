@@ -14,44 +14,31 @@
     <div id="root"></div>
     <script type="text/babel">
 
+
         function App() {
-            // 處理輸入的元件
-            // value=[ {text} ,  ]
-            let [text, setText] = React.useState("")
+            // #2-1 將輸入框設定成一個狀態便宣告變數,
+            //      並與輸入框的狀態做對應(用value)
+            //      輸入框的狀態是controlled element
+            //      text => 原本輸入框的文字(空白)的狀態
+            //      setText => 輸入框輸入後的文字的狀態
+            const [text, setText] = React.useState("");
+            // #3-2 onChange函式
+            // #3-3 onChange函式結束後,更新text
             let changeText = function (e) {
-                // setText更改狀態
-                setText(e.target.value)
-            };
-
-            // 處理主要的列表資料
-            let [data,setData]=React.useState([]);
-            let items=[];
-            for(let i =0;i<data.length;i++){
-                items.push(<li key={i}>{data[i]}</li>);
-            };
-
-            // 處理點擊動作
+                // #3-3 取得輸入框裡面的文字 => 輸入框輸入後的文字的狀態
+                // console.log(e.target.value) 
+                setText(e.target.value) ;
+            } 
+            // #1-2 點擊事件的函式
             let add = function () {
-                // 原生JS *使用React,程式中不會直接操作HTML DOM*
-                // React=> 
-                // let textBox=document.querySelector("#textBox");
-                // console.log(textBox.value)  
-                console.log(text)
-                // 複製陣列slice(0)
-                let newData=data.slice(0);
-                newData.push(text);
-                setData(newData);
-                // 把輸入框文字清空
-                setText("");
-            };
+                // #3-4 顯示text
+                console.log(text);
+            }
             return <>
-                {/* 用value作狀態對應(let...) =>controlled element*/}
-                {/* onChange => 當內容有變化時*/}
-                <input type="text" name="" value={text} onChange={changeText}/*id="textBox"*/ />
-                {/* 錯誤#1 沒有要立即使用不加() ()有呼叫動作 */}
-                <button id="btn" onClick={add}>新增</button>
-                <hr />
-                <ul>{items}</ul>
+                {/* #3 輸入框事件=>onChange 當內容發生變化 */}
+                <input type="text" value={text} onChange={changeText} />
+                {/* #1-1 按鈕點擊事件 */}
+                <button onClick={add}>新增</button>
             </>
         }
 

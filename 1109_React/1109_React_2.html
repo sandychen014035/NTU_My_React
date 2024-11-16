@@ -14,72 +14,41 @@
     <div id="root"></div>
     <script type="text/babel">
 
+
         function App() {
-            // 處理輸入的元件
-            // value=[ {text} ,  ]
-            let [text, setText] = React.useState("")
+            const [text, setText] = React.useState("");
             let changeText = function (e) {
-                // setText更改狀態
-                setText(e.target.value)
-            };
-            // 處理勾勾區
-            let [important, setimportant] = React.useState(false);
-            let changeImportant = function () {
-                setimportant(!important);
+                setText(e.target.value);
             }
-
-
-            // 處理主要的列表資料
-            // [{text:字串},{Important:布林值}....]
-
-            let remove=function(index){
-                let newData=[...data];
-                newData.splice(index,1);
-                setData(newData);
-            }
-
-            let [data, setData] = React.useState([]);
-            let items = [];
-            for (let i = 0; i < data.length; i++) {
-                if (data[i].important) {
-                    items.push(<li
-                        style={{ fontWeight: "bold" }} key={i}>
-                        <span>{data[i].text}</span>
-                        <button onClick={()=>{remove(i);}}>X</button>
-                    </li>);
-                } else {
-                    items.push(<li key={i}>
-                        <span>{data[i].text}</span>
-                        <button onClick={()=>{remove(i);}}>X</button>
-                    </li>);
-                }
-            };
-
-            // 處理點擊動作
             let add = function () {
-                // 原生JS *使用React,程式中不會直接操作HTML DOM*
-                // React=> 
-                // let textBox=document.querySelector("#textBox");
-                // console.log(textBox.value)  
-                console.log(text)
-                // 複製陣列slice(0)
-                let newData = data.slice(0);
-                newData.push({ text: text, important: important });
+                // console.log(text);
+                // 因為是同一個陣列,React認為沒有改變
+                // data.push(text); setData(data);
+                // #4 宣告一個新陣列,來改變畫面 slice(0)=>複製原來的陣列
+                let newData=data.slice(0);
+                newData.push(text);
                 setData(newData);
-                // 把輸入框文字清空
+                //  #5 新增後清空文字框
                 setText("");
-            };
-            return <>
-                {/* 確認有沒有打勾 => checked */}
-                <input type="checkbox" checked={important} onChange={changeImportant} />
 
-                {/* 用value作狀態對應(let...) =>controlled element*/}
-                {/* onChange => 當內容有變化時 */}
-                <input type="text" name="" value={text} onChange={changeText}/*id="textBox"*/ />
-                {/* 錯誤#1 沒有要立即使用不加() ()有呼叫動作 */}
-                <button id="btn" onClick={add}>新增</button>
+            }
+            // 抓取輸入框文字到畫面上
+            // #1 建立畫面的狀態 [原始畫面,更改畫面]
+            //    *有很多筆,所以是陣列 
+            //    *先給假設值
+            let [data,setData]=React.useState(["豬豬","海豹"]);
+            // #2 宣告一個空陣列來放data抓取的值
+            let items=[];
+            // #3 抓取data的每一個值 並加上<li></li>
+            for(let i=0;i<data.length;i++){
+                items.push(<li key={i}>{data[i]}</li>);
+            }
+            return <>
+                <input type="text" value={text} onChange={changeText} />
+                <button onClick={add}>新增</button>
                 <hr />
-                <ul>{items}</ul>
+                <ul>{items}
+                </ul>
             </>
         }
 
