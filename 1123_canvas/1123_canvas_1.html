@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <canvas id="cvs" width="800" height="600" style="border: 1px solid black;"></canvas>
+    <script>
+        // 取得canvas物件
+        let cvs = document.querySelector("#cvs");
+        // * cvs為平面,沒有層次之分 *
+        // 取得對應的Context物件
+        let ctx = cvs.getContext("2d");
+        
+        // 更改填滿的顏色 => fillStyle 所有的fill都會沿用 要改色須改回來
+        ctx.fillStyle="red"
+        // fillRect=>填滿 一個方形 畫一個100x100的方形在50,50的位置
+        ctx.fillRect(50, 50, 100, 100);
+        // fillText=>文字
+        // fillText 只用在方形跟文字
+        ctx.fillText("Hello", 300, 50);
+
+        // strokeRect => 描邊
+        ctx.strokeStyle="blue"
+        ctx.strokeRect(50, 200, 50, 50);
+
+        // 路徑工具
+        // 定義路徑 > 填滿或是描邊
+        ctx.beginPath();
+        ctx.moveTo(200,100);
+        ctx.lineTo(300,150);
+        ctx.lineTo(250,200);
+        // 描邊
+        ctx.stroke(); 
+        // 填滿
+        ctx.fill();
+
+        // 圓形
+        ctx.beginPath();
+        // 一個Math.PI 半圓
+        ctx.arc(100,400,50,0,2*Math.PI);
+        ctx.stroke(); 
+
+        // 曲線
+        ctx.beginPath();
+        ctx.moveTo(400,300);
+        // 二次曲線
+        ctx.quadraticCurveTo(300,50,600,100);
+        ctx.stroke(); 
+
+        // 畫一張圖片在畫面上
+        // drawImage(圖片來源,座標尺寸)
+        // 圖片來源 => 圖片物件/影片物件/canvas
+        let img = new Image(); // 如同html的img
+        img.src="seal.jpg";
+        img.addEventListener("load",function(){
+            // 確保載入完成之後才畫出來
+            // globalAlpha => 透明度
+            ctx.globalAlpha=0.8;
+            // 不要寫死 => cvs.width,cvs.height 
+            ctx.drawImage(img,0,0,cvs.width,cvs.height)
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <canvas id="cvs" width="800" height="600" style="border: 1px solid black;"></canvas>
+    <script>
+        // 取得canvas物件
+        let cvs = document.querySelector("#cvs");
+        // * cvs為平面,沒有層次之分 *
+        // 取得對應的Context物件
+        let ctx = cvs.getContext("2d");
+        class Rect {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+            }
+            // 更新資料
+            update() {
+                this.x++;
+                this.y++;
+            }
+            // 重新畫過
+            draw() {
+                ctx.fillRect(this.x, this.y, 10, 10)
+            }
+        }
+        // 初始化資料
+        let r1 = new Rect(50, 50);
+        let r2 = new Rect(100, 100);
+        console.log(r1, r2)
+        let refresh = function () {
+            // 更新資料
+            r1.update()
+            r2.update()
+            // 清空整個畫布
+            ctx.clearRect(0, 0, cvs.width, cvs.height)
+            // 根據新資料重新畫過
+            r1.draw();
+            r2.draw();
+        };
+        window.setInterval(refresh, 10)
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <canvas id="cvs" width="800" height="600" style="border: 1px solid black;"></canvas>
+    <script>
+        // 取得canvas物件
+        let cvs = document.querySelector("#cvs");
+        // * cvs為平面,沒有層次之分 *
+        // 取得對應的Context物件
+        let ctx = cvs.getContext("2d");
+        class Rect {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.vx=Math.random()*4-2; 
+                this.vy=Math.random()*4-2;
+                
+            }
+            // 更新資料
+            update() {
+                this.x+=this.vx;
+                this.y+=this.vy;
+                this.vy+=0.02;
+                // return 是否消失
+                return this.y>cvs.height;
+            }
+            // 重新畫過
+            draw() {
+                ctx.fillRect(this.x, this.y, 2, 2)
+            }
+        }
+        // 初始化資料
+        let objs=[]; // 用來裝所有要畫在畫面上的物件
+        let refresh = function () {
+            // 中心點
+            objs.push(new Rect(400,300));
+            // 更新資料
+            for(let i=0;i<objs.length;i++){
+                let dead=objs[i].update();
+                if(dead){
+                    objs.splice(i,1);
+                    i--;
+                }
+
+            }
+            // 清空整個畫布
+            ctx.clearRect(0, 0, cvs.width, cvs.height)
+            // 根據新資料重新畫過
+            for(let i=0;i<objs.length;i++){
+                objs[i].draw();
+            }
+        };
+        window.setInterval(refresh, 10)
+    </script>
+</body>
+
+</html>
